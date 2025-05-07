@@ -11,8 +11,8 @@ def measurements_normal_optuna(counts, trials):
     normal_resutl_dir = "/home/kubota/Work/optuna_turing/result/normal_optuna"
 
     for i in range(counts):
-        output_fig_dir = f"{normal_resutl_dir}/{counts}/trial_{i + 1}"
-        output_csv_file = f"{normal_resutl_dir}/{counts}/optuna_turing.csv"
+        output_fig_dir = f"{normal_resutl_dir}/{trials}/trial_{i + 1}"
+        output_csv_file = f"{normal_resutl_dir}/{trials}/optuna_turing.csv"
 
         # ディレクトリを作成（存在しない場合）
         os.makedirs(output_fig_dir, exist_ok=True)
@@ -92,13 +92,16 @@ def visualize_study_results(best_params, best_value, study, output_fig_dir):
     fig.write_image(f"{output_fig_dir}/contour_plot.png")
 
 def main():
-    # 実行回数
-    counts = 1
-    # 試行回数
-    trials = 10
+    # # 実行回数
+    # counts = 1
+    # # 試行回数
+    # trials = 10
 
-    # 最適化を実行
-    measurements_normal_optuna(counts, trials)
+    # # 最適化を実行
+    # measurements_normal_optuna(counts, trials)
+    measurements_normal_optuna(10, 25)
+    measurements_normal_optuna(10, 50)
+    measurements_normal_optuna(10, 100)
 
     print("全ての最適化が完了しました。")
 
