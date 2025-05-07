@@ -1,3 +1,26 @@
+import csv
+import optuna.visualization as vis
+
+def debag_print(best_params, best_value, time):        
+    print(f"最適なパラメータ: nb={best_params['nb']}, ib={best_params['ib']}")
+    print(f"最適なObjective Value: {best_value}")
+    print(f"処理にかかった時間は {time} 秒です")
+
+
+def save_best_trial(counts, time, best_params, best_value, output_file):
+    """
+    最適な試行の結果をCSVファイルに保存する関数。
+    """
+    # CSVファイルに追記モードで書き込む
+    with open(output_file, 'a', newline='') as f:
+        writer = csv.writer(f)
+        # ヘッダー行を追加（ファイルが空の場合のみ）
+        if f.tell() == 0:
+            writer.writerow(['Trial', 'Execution Time (s)', 'nb', 'ib', 'Objective Value'])
+        # 試行結果を記録
+        writer.writerow([counts, time, best_params['nb'], best_params['ib'], best_value])
+
+
 def visualize_study_results(best_params, best_value, study):
     """
     Optunaの最適化結果を可視化し、画像として保存する関数。
