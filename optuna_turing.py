@@ -8,10 +8,11 @@ sys.path.append('/home/kubota/Work/optuna_turing/turing')
 from normal_optuna import normal_turing
 
 def measurements_normal_optuna(counts, trials):
+    normal_resutl_dir = "/home/kubota/Work/optuna_turing/result/normal_optuna"
 
     for i in range(counts):
-        output_fig_dir = f"/home/kubota/Work/optuna_turing/result/normal_optuna/25/trial_{i + 1}"
-        output_csv_file = "/home/kubota/Work/optuna_turing/result/normal_optuna/25/optuna_turing.csv"
+        output_fig_dir = f"{normal_resutl_dir}/{counts}/trial_{i + 1}"
+        output_csv_file = f"{normal_resutl_dir}/{counts}/optuna_turing.csv"
 
         # ディレクトリを作成（存在しない場合）
         os.makedirs(output_fig_dir, exist_ok=True)
