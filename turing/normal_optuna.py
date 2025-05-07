@@ -15,8 +15,8 @@ def objective(trial):
     size = 4096
     max_nb = 512
 
-    nb = 2 * trial.suggest_int("nb", 1, max_nb/2)
-    ib = 2 * trial.suggest_int("ib", 1, nb/4)
+    nb = 2 * trial.suggest_int("nb", 2, max_nb/2)
+    ib = 2 * trial.suggest_int("ib", 2, nb/4)
     return run_time_dgeqrf(16, size, nb, ib)
 
 
@@ -38,7 +38,7 @@ def main():
     trial = 20
 
     # 処理にかかった時間を表示
-    study, time = normal_optuna(trial)
+    study, time = normal_turing(trial)
 
     print(study.best_trial)
     print(f"処理にかかった時間は {time} 秒です")
