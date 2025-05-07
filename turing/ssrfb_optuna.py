@@ -2,6 +2,7 @@ import optuna
 import subprocess
 import re
 import time
+import csv
 
 import sys
 sys.path.append('/home/kubota/Work/optuna_turing/tools')
@@ -16,7 +17,7 @@ def find_best_ib(nb, min_ib, max_ib):
         nb (int): The NB size to test.
         min_ib (int): The minimum IB size.
         max_ib (int): The maximum IB size.
-        noflush_path (str): Path to the NoFlush executable.
+        csv_file (str): Path to the CSV file where execution times will be logged.
 
     Returns:
         tuple: The best ib value and its corresponding execution time.
@@ -24,8 +25,13 @@ def find_best_ib(nb, min_ib, max_ib):
 
     noflush_path = "/home/kubota/Work/optuna_turing/tools/Tune_SSRFB-master/NoFlush"  # Correct path to NoFlush executable
 
+    csv_file="/home/kubota/Work/optuna_turing/result/ssrfb_optuna/tmp/find_best_ib_times.csv"
+
     best_ib = None
     best_time = float('inf')
+
+    # 計測開始
+    start_time = time.time()
 
     for ib in range(min_ib, max_ib + 1, 2):
         print(f"Testing nb={nb}, ib={ib}...")
@@ -42,14 +48,26 @@ def find_best_ib(nb, min_ib, max_ib):
             # Parse the output
             for line in result.stdout.splitlines():
                 if line.startswith(f"{nb}, {ib},"):
-                    _, _, time = line.split(", ")
-                    time = float(time)
-                    if time < best_time:
-                        best_time = time
+                    _, _, time_str = line.split(", ")
+                    time_value = float(time_str)
+                    if time_value < best_time:
+                        best_time = time_value
                         best_ib = ib
         except subprocess.CalledProcessError as e:
             print(f"Error running NoFlush with nb={nb}, ib={ib}: {e}")
             continue
+
+    # 計測終了
+    end_time = time.time()
+    execution_time = end_time - start_time
+
+    # CSVファイルに記録
+    with open(csv_file, mode="a", newline="") as file:
+        writer = csv.writer(file)
+        # ヘッダー行を追加（ファイルが空の場合のみ）
+        if file.tell() == 0:
+            writer.writerow(["nb", "min_ib", "max_ib", "execution_time"])
+        writer.writerow([nb, min_ib, max_ib, execution_time])
 
     return best_ib, best_time
 
@@ -61,7 +79,7 @@ def objective(trial):
     
     nb = 2 * trial.suggest_int("nb", min_nb/2, max_nb/2)
 
-    best_ib, best_time = find_best_ib(nb, 4, nb/2)
+    best_ib, best_time = find_best_ib(nb, 4, int(nb / 2))
 
     if best_ib is not None:
         print(f"The best ib for nb={nb} is {best_ib} with time {best_time:.6f} seconds.")
