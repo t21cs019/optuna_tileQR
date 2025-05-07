@@ -7,9 +7,7 @@ import sys
 sys.path.append('/home/kubota/Work/optuna_turing/turing')
 from normal_optuna import normal_turing
 
-def main():
-    counts = 1
-    trials = 5
+def measurements_normal_optuna(counts, trials):
 
     for i in range(counts):
         output_fig_dir = f"/home/kubota/Work/optuna_turing/result/normal_optuna/25/trial_{i + 1}"
@@ -92,7 +90,16 @@ def visualize_study_results(best_params, best_value, study, output_fig_dir):
     fig = vis.plot_contour(study)
     fig.write_image(f"{output_fig_dir}/contour_plot.png")
 
+def main():
+    # 実行回数
+    counts = 1
+    # 試行回数
+    trials = 10
 
+    # 最適化を実行
+    measurements_normal_optuna(counts, trials)
+
+    print("全ての最適化が完了しました。")
 
 if __name__ == "__main__":
     main()
