@@ -7,10 +7,17 @@ wheels/
 *.egg-info
 
 # Virtual environments
-.venv
+# plasma-bench: uvの仮想環境
+.venv/
 
 # Exclude result directory
 optuna_turing/result/
 
 # Exclude test directory
 optuna_turing/test/
+
+# plasma-bench: 計測結果（マシンごとに異なるため除外）
+results/benchmark/*.csv
+results/optuna/**/*.csv
+results/optuna/**/*.png
+
