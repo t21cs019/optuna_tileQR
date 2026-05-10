@@ -20,7 +20,14 @@ if command -v uv &>/dev/null; then
     echo "[1/2] uv はすでにインストール済みです: $(uv --version)"
 else
     echo "[1/2] uv をインストールしています..."
-    curl -LsSf https://astral.sh/uv/install.sh | sh
+    if command -v curl &>/dev/null; then
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+    elif command -v wget &>/dev/null; then
+        wget -qO- https://astral.sh/uv/install.sh | sh
+    else
+        echo "[ERROR] curl も wget も見つかりません。どちらかをインストールしてください。"
+        exit 1
+    fi
 
     export PATH="${UV_INSTALL_DIR}:${PATH}"
 
