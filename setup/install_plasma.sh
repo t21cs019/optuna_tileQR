@@ -71,6 +71,29 @@ make -j"${NUM_MAKE_JOBS}"
 echo "[3/3] インストールしています -> ${PLASMA_INSTALL}"
 make install
 
+# make install で漏れるヘッダを手動でコピー
+cp "${SRC_DIR}"/include/plasma_core_blas_*.h "${PLASMA_INSTALL}/include/"
+cp "${SRC_DIR}"/include/core_lapack*.h "${PLASMA_INSTALL}/include/"
+
 echo ""
 echo "[完了] PLASMA のインストールが完了しました。"
 echo "       テストバイナリ: ${PLASMA_TEST}"
+
+# --- ライブラリパスの永続化 ---------------------------------------------------
+# ~/.bashrc に LD_LIBRARY_PATH を追記（重複追記を防ぐ）
+BASHRC="${HOME}/.bashrc"
+MARKER="# plasma-bench: library paths"
+
+if ! grep -q "${MARKER}" "${BASHRC}" 2>/dev/null; then
+    cat >> "${BASHRC}" << BASHRC_EOF
+
+${MARKER}
+export LD_LIBRARY_PATH="${OPENBLAS_INSTALL}/lib:${PLASMA_INSTALL}/lib\${LD_LIBRARY_PATH:+:\${LD_LIBRARY_PATH}}"
+BASHRC_EOF
+    echo "       LD_LIBRARY_PATH を ~/.bashrc に追記しました。"
+    echo "       次回ログイン以降に自動で有効になります。"
+fi
+
+# 現在のシェルでも即時有効化
+export LD_LIBRARY_PATH="${OPENBLAS_INSTALL}/lib:${PLASMA_INSTALL}/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+echo "       LD_LIBRARY_PATH を現在のシェルで有効化しました。"
