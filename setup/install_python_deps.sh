@@ -32,6 +32,15 @@ else
     echo "       インストール完了: $(uv --version)"
 fi
 
+# --- uv の PATH を ~/.bashrc に永続化 -----------------------------------------
+BASHRC="${HOME}/.bashrc"
+UV_PATH_LINE='export PATH="${HOME}/.local/bin:${PATH}"'
+
+if ! grep -qF "${UV_PATH_LINE}" "${BASHRC}" 2>/dev/null; then
+    echo "${UV_PATH_LINE}" >> "${BASHRC}"
+    echo "       PATH を ~/.bashrc に追記しました。"
+fi
+
 # --- 2. uv sync で依存パッケージを一括インストール ----------------------------
 echo "[2/2] pyproject.toml から依存パッケージをインストールしています..."
 cd "${REPO_ROOT}"

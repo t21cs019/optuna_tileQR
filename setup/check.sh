@@ -71,8 +71,8 @@ check "plasmatest"       "test -f '${PLASMA_TEST}'"
 check "libplasma.so"     "test -f '${PLASMA_INSTALL}/lib/libplasma.so'"
 
 echo ""
-echo "--- NoFlush（オプション） ---"
-warn  "NoFlush 実行ファイル"  "test -f '${NOFLUSH_PATH}'"
+echo "--- NoFlush（Tune_SSRFB） ---"
+check "NoFlush 実行ファイル"  "test -f '${NOFLUSH_PATH}'"
 
 echo ""
 echo "======================================================"

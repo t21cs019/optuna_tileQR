@@ -32,19 +32,24 @@ bash "${SCRIPT_DIR}/install_openblas.sh"
 echo ""
 
 # 3. PLASMA
-echo ">>> [3/3] PLASMA のインストール"
+echo ">>> [3/4] PLASMA のインストール"
 bash "${SCRIPT_DIR}/install_plasma.sh"
+echo ""
+
+# 4. NoFlush（Tune_SSRFB）
+echo ">>> [4/4] NoFlush（Tune_SSRFB）のインストール"
+bash "${SCRIPT_DIR}/install_noflush.sh"
 echo ""
 
 echo "======================================================"
 echo " セットアップ完了！"
-echo ""
-echo " ※ NoFlush（SSRFB用）は別途手動インストールが必要です。"
-echo "   詳細は README.md の「NoFlushのセットアップ」を参照してください。"
 echo ""
 echo " セットアップの確認:"
 echo "   bash setup/check.sh"
 echo ""
 echo " ベンチマーク実行:"
 echo "   bash run_benchmark.sh --help"
+echo ""
+echo " Optuna チューニング実行:"
+echo "   bash run_optuna.sh --help"
 echo "======================================================"
